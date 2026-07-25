@@ -277,7 +277,7 @@ merge_devin_config() {
     | ($t.hooks // {}) as $t_hooks
     | (
         (($t_hooks | keys) + ($s_hooks | keys)) | unique
-        | map({(.): (($t_hooks[.] // []) + ($s_hooks[.] // []))})
+        | map({(.): ((($t_hooks[.] // []) | map(select((.hooks // []) | map(.command | contains("jbcontext")) | any | not))) + ($s_hooks[.] // []))})
         | add // {}
       ) as $hooks
     | $t

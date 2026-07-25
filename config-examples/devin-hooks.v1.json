@@ -1,0 +1,50 @@
+{
+  "SessionStart": [
+    {
+      "matcher": "",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node \"hooks/jbcontext/jbcontext-devin.js\" SessionStart",
+          "timeout": 10
+        }
+      ]
+    }
+  ],
+  "PostCompaction": [
+    {
+      "matcher": "",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node \"hooks/jbcontext/jbcontext-devin.js\" PostCompaction",
+          "timeout": 2
+        }
+      ]
+    }
+  ],
+  "PreToolUse": [
+    {
+      "matcher": "",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node \"hooks/jbcontext/jbcontext-devin.js\" PreToolUse",
+          "timeout": 2
+        }
+      ]
+    }
+  ],
+  "UserPromptSubmit": [
+    {
+      "matcher": "",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node \"hooks/jbcontext/jbcontext-devin.js\" UserPromptSubmit",
+          "timeout": 2
+        }
+      ]
+    }
+  ]
+}

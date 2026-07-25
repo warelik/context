@@ -25,7 +25,7 @@
   ],
   "PreToolUse": [
     {
-      "matcher": "",
+      "matcher": "mcp__jbcontext__code_search|grep|glob|find_file_by_name|exec",
       "hooks": [
         {
           "type": "command",

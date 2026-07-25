@@ -20,7 +20,7 @@ SRC_CONFIG="$REPO_ROOT/.devin/config.json"
 SRC_HOOKS_V1="$REPO_ROOT/.devin/hooks.v1.json"
 SRC_SKILLS_DIR="$REPO_ROOT/.devin/skills"
 SRC_AGENTS_MD="$REPO_ROOT/AGENTS.md"
-SRC_HOOKS_DIR="$REPO_ROOT/hooks/jbcontext"
+SRC_HOOKS_DIR="$REPO_ROOT/hooks/devin"
 SRC_MCP_DESC_DIR="$REPO_ROOT/mcp"
 
 # Options

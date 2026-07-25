@@ -25,7 +25,7 @@ Read-only exploration subagents that run several `jbcontext search` queries in t
 
 ### Devin CLI integration
 
-The `scripts/setup-agent-devin.sh` installer registers `jbcontext` as an MCP server and installs lifecycle hooks that inject reminders at `SessionStart`, `PostCompaction`, `UserPromptSubmit` and `PreToolUse`.
+The `scripts/setup-agent-devin.sh` installer registers `jbcontext` as an MCP server and installs lifecycle hooks that inject reminders at `SessionStart`, `PostCompaction`, `UserPromptSubmit` and `PreToolUse`. Source hook files live in `hooks/devin/` and are installed into `hooks/jbcontext/` (tool directory) at runtime.
 
 ```bash
 ./scripts/setup-agent-devin.sh --agent=DEVIN --scope=USER --non-interactive

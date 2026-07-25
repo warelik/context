@@ -29,7 +29,7 @@ Add a Devin CLI installer and adapter to the official integration repo:
 
 1. `scripts/setup-agent-devin.sh` — one-command installer for `--scope=USER`
    and `--scope=PROJECT`.
-2. `hooks/jbcontext/jbcontext-devin.js` — Node adapter that reads upstream
+2. `hooks/devin/jbcontext-devin.js` — Node adapter that reads upstream
    instruction text files and emits them as Devin `additionalContext`.
 3. `.devin/config.json`, `.devin/hooks.v1.json`, `.devin/skills/` — project
    assets that the installer copies into the user's Devin config.
@@ -64,7 +64,7 @@ Add a Devin CLI installer and adapter to the official integration repo:
 - [ ] After installation, Devin sees instructions at `SessionStart` and
       reminders at `UserPromptSubmit` and `PreToolUse`, and `mcp__jbcontext__code_search`
       receives `pathFilter` when omitted.
-- [ ] `node hooks/jbcontext/jbcontext-devin.js --self-test` passes (10/10).
+- [ ] `node hooks/devin/jbcontext-devin.js --self-test` passes (10/10).
 
 ---
 
@@ -83,15 +83,15 @@ MCP + hooks architecture.
 
 ### What's included
 
-- `hooks/jbcontext/jbcontext-devin.js` — Node adapter that reads upstream
+- `hooks/devin/jbcontext-devin.js` — Node adapter that reads upstream
   instruction text files and emits them as `additionalContext` for the four
   lifecycle hooks. It injects `pathFilter: "."` when `mcp__jbcontext__code_search`
   is called without one and starts a background `jbcontext index` on `SessionStart`.
-- `hooks/jbcontext/session-start.txt` — full workflow instructions injected at
+- `hooks/devin/session-start.txt` — full workflow instructions injected at
   `SessionStart` and `PostCompaction`.
-- `hooks/jbcontext/user-prompt-submit.txt` — short reminder injected at
+- `hooks/devin/user-prompt-submit.txt` — short reminder injected at
   `UserPromptSubmit`.
-- `hooks/jbcontext/pre-tool-use.txt` — longer reminder injected before
+- `hooks/devin/pre-tool-use.txt` — longer reminder injected before
   `grep`/`glob`/`find_file_by_name`/`exec rg|grep|find|git log`.
 - `.devin/config.json` — registers the `jbcontext` MCP server and allows
   `mcp__jbcontext__*` and `Exec(jbcontext)`.
@@ -124,7 +124,7 @@ until the server accepts an omitted filter.
 3. Launch `devin` in the project and ask a broad code-discovery question.
 4. Verify Devin calls `mcp__jbcontext__code_search` (or `/context-search`)
    before `grep`/`rg`/`find`/`find_file_by_name`.
-5. Run `node hooks/jbcontext/jbcontext-devin.js --self-test` — 10/10 pass.
+5. Run `node hooks/devin/jbcontext-devin.js --self-test` — 10/10 pass.
 
 ### Notes
 
@@ -156,7 +156,7 @@ After the contribution is accepted, the upstream repository should contain:
     dependency-search/SKILL.md
     org-search/SKILL.md
 hooks/
-  jbcontext/
+  devin/
     jbcontext-devin.js
     pre-tool-use.txt
     session-start.txt

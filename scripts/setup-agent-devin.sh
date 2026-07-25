@@ -380,10 +380,20 @@ fi
 
 # 2. Hooks (Node adapter + instruction text)
 if $INSTALL_HOOKS; then
-  mkdir -p "$TARGET_HOOKS_DIR"
-  cp -R "$SRC_HOOKS_DIR/"* "$TARGET_HOOKS_DIR/"
-  chmod +x "$TARGET_HOOKS_DIR"/*.js 2>/dev/null || true
-  log_ok "Hooks installed to $TARGET_HOOKS_DIR"
+  if [[ "$SCOPE_UPPER" == "PROJECT" && "$REPO_ROOT" == "$TARGET_DIR" ]]; then
+    log_warn "Project scope target is the integration repo itself; hooks are already in hooks/devin/."
+  else
+    mkdir -p "$(dirname "$TARGET_HOOKS_DIR")"
+    if [[ -e "$TARGET_HOOKS_DIR" || -L "$TARGET_HOOKS_DIR" ]]; then
+      if [[ -L "$TARGET_HOOKS_DIR" ]]; then
+        rm "$TARGET_HOOKS_DIR"
+      else
+        mv "$TARGET_HOOKS_DIR" "$TARGET_HOOKS_DIR.bak.$(date +%Y%m%d%H%M%S)"
+      fi
+    fi
+    ln -s "$SRC_HOOKS_DIR" "$TARGET_HOOKS_DIR"
+    log_ok "Hooks linked to $TARGET_HOOKS_DIR -> $SRC_HOOKS_DIR"
+  fi
 
   if [[ "$SCOPE_UPPER" == "PROJECT" ]]; then
     mkdir -p "$TARGET_DIR/.devin"
@@ -392,20 +402,27 @@ if $INSTALL_HOOKS; then
   fi
 fi
 
-# 2b. MCP tool descriptions (for documentation / future wrapper)
-if $INSTALL_MCP || $INSTALL_HOOKS; then
-  if [[ -d "$SRC_MCP_DESC_DIR" ]]; then
-    mkdir -p "$TARGET_HOOKS_DIR/mcp"
-    cp -R "$SRC_MCP_DESC_DIR/"* "$TARGET_HOOKS_DIR/mcp/"
-    log_ok "MCP tool descriptions copied to $TARGET_HOOKS_DIR/mcp"
-  fi
-fi
-
 # 3. Skills
 if $INSTALL_SKILLS; then
-  mkdir -p "$TARGET_SKILLS_DIR"
-  cp -R "$SRC_SKILLS_DIR/"* "$TARGET_SKILLS_DIR/"
-  log_ok "Skills installed to $TARGET_SKILLS_DIR"
+  if [[ "$SCOPE_UPPER" == "PROJECT" && "$REPO_ROOT" == "$TARGET_DIR" ]]; then
+    log_warn "Project scope target is the integration repo itself; skills are already in .devin/skills/."
+  else
+    mkdir -p "$TARGET_SKILLS_DIR"
+    for src in "$SRC_SKILLS_DIR"/*; do
+      [[ -d "$src" ]] || continue
+      name=$(basename "$src")
+      dst="$TARGET_SKILLS_DIR/$name"
+      if [[ -e "$dst" || -L "$dst" ]]; then
+        if [[ -L "$dst" ]]; then
+          rm "$dst"
+        else
+          mv "$dst" "$dst.bak.$(date +%Y%m%d%H%M%S)"
+        fi
+      fi
+      ln -s "$src" "$dst"
+    done
+    log_ok "Skills linked to $TARGET_SKILLS_DIR"
+  fi
 fi
 
 # 4. Subagents (context-explorer is packaged as a subagent skill)
